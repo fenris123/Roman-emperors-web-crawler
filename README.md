@@ -4,6 +4,8 @@ With this Python program you insert the wikipedia page of a roman emperor, and i
 You must insert the wikipedia page and how many sucessors do you want to know.
 The number of generations must be inserted using numbers, not text.
 
+The program requires the beautifull soup library.  You must install it if it's not installed.
+
 WARNING: 
 WARNING:
 WARNING:
