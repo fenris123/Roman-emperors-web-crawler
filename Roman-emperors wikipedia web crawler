@@ -1,0 +1,84 @@
+@author: Guillermo Ferrer.
+"""
+###
+
+### ESTE PROGRAMA REQUIERE BEAUTIFULL SOUP.  
+### CASO DE NO ESTAR INSTALADO EJECUTAR LA SIGUIENTE LINEA:
+
+##  pip install beautifulsoup4
+
+
+# ESTO CARGARA TODAS LAS LIBRERIAS NECESARIAS.
+
+from urllib.request import urlopen
+from bs4 import BeautifulSoup
+import ssl
+
+
+#  ESTA PARTE ES PARA IGNORAR POSIBLES ERRORES DE CERTIFICADOS
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
+
+#  ESTA PARTE ES PARA PEDIRNOS LA PAGINA WEB, EL NUMERO DE CICLOS EN NUMERO, Y CARGARLO EN BEAUTIFULSOUP.
+
+url = input ("Inserte la direccion de la pagina web:")
+ciclos = input ("inserte (en numeros) cuantas generaciones quiere buscar:")
+
+
+try:
+    ciclos = int(ciclos)
+
+except ValueError:
+    print ("por favor, use numeros para introducir la posicion.")
+    quit()
+
+html = urlopen (url, context=ctx).read()   # CONTEXT = CXT en esta linea se usa para los certificados 
+sopa = BeautifulSoup(html, "html.parser")
+
+
+#  AQUI ESTABLECEMOS EL NUMERO DE GENERACIONES A MIRAR.  AL LLEGAR A ELLAS, PARARA
+
+try:
+    lista = list()
+    encontrado_sucesor = False
+    for ciclo in range(ciclos):
+        
+            tags = sopa("td")
+    
+            for tag in tags:
+                if "Sucesor" in tag.get_text():
+                    linea  = tag.find("a")
+                    direccion = linea.get("href")
+                    nombre = linea.get ("title")
+                    lista.append (nombre)
+                    siguiente= "https://es.wikipedia.org" + direccion
+                    html = urlopen(siguiente, context=ctx).read()
+                    sopa = BeautifulSoup(html, "html.parser")
+                    encontrado_sucesor = True
+                    break # Salir del bucle interno cuando se encuentra un sucesor
+                    
+#  AQUI VAN LOS CIERRES DEL PROGRAMA: 
+
+            if not encontrado_sucesor:
+                break
+
+    if encontrado_sucesor:
+        print("Se encontraron sucesores durante todas las generaciones:")
+    else:
+        print("No se encontraron sucesores durante alguna de las generaciones:")
+    
+        
+    print("Lista de sucesores encontrados:")
+    print(lista)
+
+except: 
+    print ("error desconocido. Ultimo individuo, pagina y generacion analizados:")
+    print (nombre)
+    print (direccion)
+    print ("Estos son todos los gobernantes encontrados:")
+    print (lista)
+    quit()
+
