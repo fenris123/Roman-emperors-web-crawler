@@ -15,6 +15,10 @@ WARNING:
 You can try it with the spanish page for the first roman emperor, Augusto:  https://es.wikipedia.org/wiki/Augusto
 Of course, you can try it with other emperors.  Just remember to use the spanish version of wikipedia.
 
+Notes on the code are in spanish too.  I'm spanish after all!!!  
+If you want to change the code, use google translator or chat gtp to change it
+
+
 
 KNOWN ISSUES:
 
@@ -22,6 +26,7 @@ The roman emperor Teodosio I splited the empire in two. The program will continu
 
 The (oriental) Roman Emperor Zenon was deposed by Basilisco and reinstated after that: This create a loop in the program.  
 It will not crash. It just count every loop as an adittional generation and stop when it achieves the selected number of generations.
+
 
 
 FINAL THOUGHS
