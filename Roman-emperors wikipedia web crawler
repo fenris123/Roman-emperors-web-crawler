@@ -12,14 +12,9 @@
 
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
-import ssl
 
 
-#  ESTA PARTE ES PARA IGNORAR POSIBLES ERRORES DE CERTIFICADOS
 
-ctx = ssl.create_default_context()
-ctx.check_hostname = False
-ctx.verify_mode = ssl.CERT_NONE
 
 
 #  ESTA PARTE ES PARA PEDIRNOS LA PAGINA WEB, EL NUMERO DE CICLOS EN NUMERO, Y CARGARLO EN BEAUTIFULSOUP.
@@ -35,7 +30,7 @@ except ValueError:
     print ("por favor, use numeros para introducir la posicion.")
     quit()
 
-html = urlopen (url, context=ctx).read()   # CONTEXT = CXT en esta linea se usa para los certificados 
+html = urlopen (url)  
 sopa = BeautifulSoup(html, "html.parser")
 
 
@@ -55,7 +50,7 @@ try:
                     nombre = linea.get ("title")
                     lista.append (nombre)
                     siguiente= "https://es.wikipedia.org" + direccion
-                    html = urlopen(siguiente, context=ctx).read()
+                    html = urlopen(siguiente)
                     sopa = BeautifulSoup(html, "html.parser")
                     encontrado_sucesor = True
                     break # Salir del bucle interno cuando se encuentra un sucesor
@@ -81,4 +76,3 @@ except:
     print ("Estos son todos los gobernantes encontrados:")
     print (lista)
     quit()
-
